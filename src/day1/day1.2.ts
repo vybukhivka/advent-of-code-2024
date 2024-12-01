@@ -1,7 +1,7 @@
 import { createSortedColumns } from "./day1.1";
 import { data } from "./day1.1-input";
 
-export const day2 = () => {
+export const part2 = () => {
 	const { left, right } = createSortedColumns(data);
 
 	const similarities = left.reduce((similarityScore, curLeft) => {

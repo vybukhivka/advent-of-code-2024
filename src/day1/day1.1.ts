@@ -26,7 +26,7 @@ function measureDistance(leftNum: number, rightNum: number): number {
 	return Math.abs(leftNum - rightNum);
 }
 
-export const day1 = (): number => {
+export const part1 = (): number => {
 	const idColumns = createSortedColumns(data);
 	const idPairs = createPairs(idColumns.left, idColumns.right);
 

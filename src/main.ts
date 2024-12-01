@@ -1,4 +1,5 @@
-import { day2 } from "./day1/day1.2";
+import { part1 } from "./day1/day1.1";
+import { part2 } from "./day1/day1.2";
 import "./style.css";
 
 const container = document.createElement("div");
@@ -8,7 +9,7 @@ const output = document.createElement("h4");
 const app = document.querySelector("#app");
 
 h3.className = "greet1";
-h3.textContent += "day 1.2";
+h3.textContent += "day 1";
 btn.className = "btn1";
 btn.textContent = "output";
 output.className = "output1";
@@ -18,8 +19,6 @@ container.append(h3);
 container.append(btn);
 container.append(output);
 
-day2();
-
 btn.addEventListener("click", () => {
-	output.textContent = String(day2());
+	output.textContent = `part 1: ${part1()}; part 2: ${part2()};`;
 });
