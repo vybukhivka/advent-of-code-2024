@@ -1,17 +1,18 @@
-import { createPairs, createSortedColumns } from "./day1.1";
+import { createSortedColumns } from "./day1.1";
 import { data } from "./day1.1-input";
 
-const example = `3   4
-4   3
-2   5
-1   3
-3   9
-3   3`;
+export const day2 = () => {
+	const { left, right } = createSortedColumns(data);
 
-export const day2 = (): number => {
-	const idColumns = createSortedColumns(example);
-	const idPairs = createPairs(idColumns.left, idColumns.right);
-	console.log(idPairs);
+	const similarities = left.reduce((similarityScore, curLeft) => {
+		const amountOfMathesOnRight = right.reduce((matchCount, curRight) => {
+			curLeft === curRight && ++matchCount;
 
-	return 1;
+			return matchCount;
+		}, 0);
+
+		return (similarityScore += amountOfMathesOnRight * curLeft);
+	}, 0);
+
+	return similarities;
 };
