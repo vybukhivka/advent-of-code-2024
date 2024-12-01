@@ -1,33 +1,26 @@
 import { data } from "./day1-input";
 
-export const day1 = () => {
-	const div = document.createElement("div");
-	div.classList.add("greet");
-	div.innerHTML += "hello day 1";
+export const day1 = (): number => {
+	type Columns = { left: number[]; right: number[] };
+	type Pair = [number, number];
 
-	document.body.append(div);
-
-	function createSortedColumns(data: string): {
-		left: number[];
-		right: number[];
-	} {
-		const rows = data.replaceAll("   ", " ").split("\n");
-		const left = rows.map((row: string) =>
-			Number(row.slice(0, row.indexOf(" ")).trim()),
+	function createSortedColumns(data: string): Columns {
+		const rows = data.split("\n");
+		const left = rows.map(
+			(row: string) => Number(row.slice(0, row.indexOf("   ")).trim()) || 0,
 		);
-		const right = rows.map((row: string) =>
-			Number(row.slice(row.indexOf(" ")).trim()),
+		const right = rows.map(
+			(row: string) => Number(row.slice(row.indexOf("   ")).trim()) || 0,
 		);
 
 		return { left: left.sort(), right: right.sort() };
 	}
 
-	function createPairs(left: number[], right: number[]) {
-		const pairs = [];
-		for (let i = 0; i < left.length; i++) {
-			pairs.push([left[i], right[i]]);
+	function createPairs(left: number[], right: number[]): Pair[] {
+		if (left.length !== right.length) {
+			throw new Error("Columns have different lengths");
 		}
-		return pairs;
+		return left.map((value, i) => [value, right[i]]);
 	}
 
 	function measureDistance(leftNum: number, rightNum: number): number {
@@ -39,11 +32,9 @@ export const day1 = () => {
 	const idColumns = createSortedColumns(data);
 	const idPairs = createPairs(idColumns.left, idColumns.right);
 
-	const distance = idPairs.reduce((acc, cur) => {
-		return acc + measureDistance(cur[0], cur[1]);
+	const distance = idPairs.reduce((acc, [left, right]) => {
+		return acc + measureDistance(left, right);
 	}, 0);
 
-	console.log(distance);
-
-	return true;
+	return distance;
 };
