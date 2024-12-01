@@ -2,11 +2,16 @@ body {
 	background-color: #000;
 }
 
-.greet {
+div {
+	width: 150px;
+	height: 150px;
+}
+
+h3 {
 	color: aliceblue;
 }
 
-.btn {
+button {
 	background-color: black;
 	color: aliceblue;
 	border: 1px solid aliceblue;
@@ -15,6 +20,6 @@ body {
 	height: 30px;
 }
 
-.output {
+h4 {
 	color: aliceblue;
 }

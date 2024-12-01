@@ -1,20 +1,25 @@
+import { day2 } from "./day1/day1.2";
 import "./style.css";
-import { day1 } from "./day1";
 
+const container = document.createElement("div");
 const h3 = document.createElement("h3");
 const btn = document.createElement("button");
 const output = document.createElement("h4");
+const app = document.querySelector("#app");
 
-h3.className = "greet";
-h3.textContent += "day 1";
-btn.className = "btn";
+h3.className = "greet1";
+h3.textContent += "day 1.2";
+btn.className = "btn1";
 btn.textContent = "output";
-output.className = "output";
+output.className = "output1";
 
-document.body.append(h3);
-document.body.append(btn);
-document.body.append(output);
+app?.append(container);
+container.append(h3);
+container.append(btn);
+container.append(output);
+
+day2();
 
 btn.addEventListener("click", () => {
-	output.textContent = String(day1());
+	output.textContent = String(day2());
 });
