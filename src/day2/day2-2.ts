@@ -1,6 +1,8 @@
 import { createRows, Directions, example, Row, validateSafe } from "./day2-1";
 import { data } from "./day2-input";
 
+// TODO console.log debugging
+
 function validation(row: Row) {
 	let previousLevel;
 	let direction: Directions;
@@ -11,6 +13,10 @@ function validation(row: Row) {
 			continue;
 		}
 		if (Math.abs(previousLevel - row[i]) > 3) {
+			// console.log(
+			// 	`difference between prev: ${previousLevel} and cur: ${row[i]} more then ${Math.abs(previousLevel - row[i])}`,
+			// );
+
 			return i - 1;
 		}
 		if (previousLevel === row[i]) {
@@ -35,15 +41,15 @@ function validation(row: Row) {
 
 export function day2part2() {
 	const levelRows = createRows(data);
+	console.log(levelRows);
 
-	const safeReportsNumber = levelRows.reduce((safeCount, row) => {
-		const firstValidation = validation(row);
-		if (typeof firstValidation === "boolean" && firstValidation === true)
-			safeCount++;
+	const safeReportsNumber = levelRows.reduce((safeCount, report) => {
+		const firstValidation = validation(report);
+		if (firstValidation === true) safeCount++;
 		else {
-			const rowWithoutWrongLevel = row;
+			const rowWithoutWrongLevel = report;
 			rowWithoutWrongLevel.splice(firstValidation, 1);
-			console.log(rowWithoutWrongLevel);
+			// console.log(rowWithoutWrongLevel);
 
 			const secondValidation = validation(rowWithoutWrongLevel);
 			if (secondValidation === true) safeCount++;
@@ -66,7 +72,7 @@ export function day2part2() {
 // 		if (!previousLevel) {
 // 			previousLevel = row[i];
 // 			console.log(`Set first preivous: ${previousLevel}`);
-// 			continue;
+//
 // 		} else {
 // 			if (Math.abs(previousLevel - row[i]) > 3) {
 // 				console.log(

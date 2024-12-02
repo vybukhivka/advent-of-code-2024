@@ -22,6 +22,7 @@ export function createRows(puzzleInput: string): LevelRows {
 }
 
 export function validateSafe(row: number[]): boolean {
+	// debugger;
 	let previousLevel;
 	let direction: Directions;
 
@@ -50,7 +51,8 @@ export function validateSafe(row: number[]): boolean {
 }
 
 export function day2part1() {
-	const levelRows = createRows(data);
+	const levelRows = createRows(example);
+	console.log(levelRows);
 
 	const safeReportsNumber = levelRows.reduce((safeCount, row) => {
 		validateSafe(row) && safeCount++;
