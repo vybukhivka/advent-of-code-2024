@@ -1,6 +1,6 @@
 import { data } from "./day2-input";
 
-const example = `7 6 4 2 1
+export const example = `7 6 4 2 1
 1 2 7 8 9
 9 7 6 2 1
 1 3 2 4 5
@@ -8,8 +8,10 @@ const example = `7 6 4 2 1
 1 3 6 7 9`;
 
 type LevelRows = number[][];
+export type Row = number[];
+export type Directions = "inc" | "dec" | unknown;
 
-function createRows(puzzleInput: string): LevelRows {
+export function createRows(puzzleInput: string): LevelRows {
 	const output = puzzleInput
 		.split("\n")
 		.map((row: string) =>
@@ -19,9 +21,9 @@ function createRows(puzzleInput: string): LevelRows {
 	return output;
 }
 
-function validateSafe(row: number[]): boolean {
+export function validateSafe(row: number[]): boolean {
 	let previousLevel;
-	let direction: "inc" | "dec" | unknown;
+	let direction: Directions;
 
 	for (let i = 0; i < row.length; i++) {
 		if (!previousLevel) {
