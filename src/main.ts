@@ -1,5 +1,6 @@
 import { part1 } from "./day1/day1.1";
 import { part2 } from "./day1/day1.2";
+import { day2part1 } from "./day2/day2-1";
 import "./style.css";
 
 const container = document.createElement("div");
@@ -19,6 +20,8 @@ container.append(h3);
 container.append(btn);
 container.append(output);
 
+day2part1();
+
 btn.addEventListener("click", () => {
-	output.textContent = `part 1: ${part1()}; part 2: ${part2()};`;
+  output.textContent = `part 1: ${part1()}; part 2: ${part2()};`;
 });
