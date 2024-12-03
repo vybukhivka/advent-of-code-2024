@@ -63,7 +63,6 @@ function validation(report: Report) {
 
 export function day2part2() {
 	const reportsArray: ReportsList = parseInput(data);
-	debugger;
 	let safeReportsCount = 0;
 
 	for (const report of reportsArray) {
@@ -71,11 +70,15 @@ export function day2part2() {
 		isSafe && safeReportsCount++;
 
 		if (levelIndex && !isSafe) {
-			const reportCopy = [...report];
-			reportCopy.splice(levelIndex, 1);
-
-			const { isSafe } = validation(reportCopy);
-			isSafe && safeReportsCount++;
+			for (let i = 0; i < report.length - 1; i++) {
+				const reportCopy = [...report];
+				reportCopy.splice(i, 1);
+				const { isSafe: isSafeCopy } = validation(reportCopy);
+				if (isSafeCopy) {
+					safeReportsCount++;
+					break;
+				}
+			}
 		}
 	}
 
