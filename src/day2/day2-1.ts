@@ -11,56 +11,87 @@ type LevelRows = number[][];
 export type Row = number[];
 export type Directions = "inc" | "dec" | unknown;
 
-export function createRows(puzzleInput: string): LevelRows {
-	const output = puzzleInput
-		.split("\n")
-		.map((row: string) =>
-			row.split(" ").map((numString: string) => Number(numString)),
-		);
+type ReportsList = number[][];
+type Report = number[];
 
-	return output;
+function parseInput(puzzleInput: string): ReportsList {
+	const reports: string[] = puzzleInput.split("\n");
+	const parsedReports = reports.map((report: string) =>
+		report.split(" ").map((level) => Number(level)),
+	);
+
+	return parsedReports;
 }
 
-export function validateSafe(row: number[]): boolean {
-	// debugger;
-	let previousLevel;
-	let direction: Directions;
+function validateDirection(report: Report) {
+	const firstLevel = report[0];
+	const secondLevel = report[1];
+	const direction = firstLevel > secondLevel ? "decreasing" : "increasing";
+	// console.log(direction);
 
-	for (let i = 0; i < row.length; i++) {
-		if (!previousLevel) {
-			previousLevel = row[i];
+	for (let i = 1; i < report.length - 1; i++) {
+		const currentLevel = report[i];
+		const nextLevel = report[i + 1];
+
+		if (direction === "increasing" && currentLevel > nextLevel) {
+			// console.log(
+			// 	`Increasing order was broaked. Current: ${currentLevel}; Next: ${nextLevel}`,
+			// );
+			return { isSafe: false, levelIndex: i };
+		}
+		if (direction === "decreasing" && currentLevel < nextLevel) {
+			// console.log(
+			// 	`Decreasing order was broaked. Current: ${currentLevel}; Next: ${nextLevel}`,
+			// );
+			return { isSafe: false, levelIndex: i };
+		}
+		// console.log(
+		// 	`Direction: ${direction}; Current: ${currentLevel}; Next: ${nextLevel}`,
+		// );
+	}
+	// console.log(`Report: ${report} is safe with direction: ${direction}`);
+	return { isSafe: true };
+}
+function validateDifference(report: Report) {
+	for (let i = 0; i < report.length - 1; i++) {
+		const currentLevel = report[i];
+		const nextLevel = report[i + 1];
+
+		if (
+			Math.abs(currentLevel - nextLevel) >= 1 &&
+			Math.abs(currentLevel - nextLevel) <= 3
+		) {
 			continue;
 		}
-		if (Math.abs(previousLevel - row[i]) > 3) {
-			return false;
-		}
-		if (previousLevel === row[i]) {
-			return false;
-		}
 
-		if (!direction) direction = previousLevel < row[i] ? "inc" : "dec";
-		if (direction === "inc" && previousLevel > row[i]) {
-			return false;
-		}
-		if (direction === "dec" && previousLevel < row[i]) {
-			return false;
-		}
-		previousLevel = row[i];
+		return { isSafe: false, levelIndex: i };
 	}
-	return true;
+	return { isSafe: true };
+}
+
+function validation(report: Report) {
+	const isSafeDirection = validateDirection(report);
+	if (!isSafeDirection.isSafe)
+		return { isSafe: false, levelIndex: isSafeDirection.levelIndex };
+
+	const isSafeDifferece = validateDifference(report);
+	if (!isSafeDifferece.isSafe)
+		return { isSafe: false, levelIndex: isSafeDifferece.levelIndex };
+
+	return { isSafe: true };
 }
 
 export function day2part1() {
-	const levelRows = createRows(example);
-	console.log(levelRows);
+	// debugger;
+	const reportsArray: ReportsList = parseInput(data);
+	let safeReportsCount = 0;
+	// console.log(reportsArray);
+	for (const report of reportsArray) {
+		const { isSafe } = validation(report);
+		isSafe ? safeReportsCount++ : null;
+	}
 
-	const safeReportsNumber = levelRows.reduce((safeCount, row) => {
-		validateSafe(row) && safeCount++;
+	console.log(safeReportsCount);
 
-		return safeCount;
-	}, 0);
-
-	console.log(safeReportsNumber);
-
-	return safeReportsNumber;
+	return true;
 }
