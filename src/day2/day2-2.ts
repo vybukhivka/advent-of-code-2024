@@ -72,7 +72,7 @@ export function day2part2() {
 			continue;
 		}
 
-		for (let i = 0; i < report.length - 1; i++) {
+		for (let i = 0; i < report.length; i++) {
 			const reportCopy = [...report];
 			reportCopy.splice(i, 1);
 			const { isSafe: isSafeCopy } = validation(reportCopy);
