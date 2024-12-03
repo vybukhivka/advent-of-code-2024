@@ -67,17 +67,18 @@ export function day2part2() {
 
 	for (const report of reportsArray) {
 		const { isSafe, levelIndex } = validation(report);
-		isSafe && safeReportsCount++;
+		if (isSafe) {
+			safeReportsCount++;
+			continue;
+		}
 
-		if (levelIndex && !isSafe) {
-			for (let i = 0; i < report.length - 1; i++) {
-				const reportCopy = [...report];
-				reportCopy.splice(i, 1);
-				const { isSafe: isSafeCopy } = validation(reportCopy);
-				if (isSafeCopy) {
-					safeReportsCount++;
-					break;
-				}
+		for (let i = 0; i < report.length - 1; i++) {
+			const reportCopy = [...report];
+			reportCopy.splice(i, 1);
+			const { isSafe: isSafeCopy } = validation(reportCopy);
+			if (isSafeCopy) {
+				safeReportsCount++;
+				break;
 			}
 		}
 	}
