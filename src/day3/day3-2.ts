@@ -1,11 +1,11 @@
 import { calcMulsWithSum, data, findMuls } from "./day3-1";
 
-const data = `xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))`;
+const exampleData = `xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))`;
 
-function findDont(inputData) {
+function findDont(inputData: string) {
 	const dontReg = /don\'t\(\)/g;
 	const dontMatches = inputData.matchAll(dontReg);
-	const compareFn = (a, b) => (a > b ? -1 : 0);
+	const compareFn = (a: number, b: number) => (a > b ? -1 : 0);
 	let dontIndexes = [];
 
 	for (const match of dontMatches) {
@@ -15,10 +15,10 @@ function findDont(inputData) {
 	return dontIndexes.sort(compareFn);
 }
 
-function findDo(inputData) {
+function findDo(inputData: string) {
 	const dontReg = /do\(\)/g;
 	const doMatches = inputData.matchAll(dontReg);
-	const compareFn = (a, b) => (a > b ? -1 : 0);
+	const compareFn = (a: number, b: number) => (a > b ? -1 : 0);
 	let doIndexes = [];
 
 	for (const match of doMatches) {
@@ -28,20 +28,14 @@ function findDo(inputData) {
 	return doIndexes.sort(compareFn);
 }
 
-function createMulSelections(doArr, dontArr) {
+function createMulSelections(doArr: number[], dontArr: number[]) {
+	// debugger;
 	const disabled = [];
 	const enabled = [];
 	let currentDont = 0;
 	let currentDo = 0;
 	let lastDont = -1;
 	let lastDo = -1;
-
-	console.log("dont", dontArr);
-	console.log("do  ", doArr);
-
-	// do() enables future mul instructions
-	// from start of the string and till first don't muls must be executed
-	// don't() disable future mul instructions
 
 	// enabled mul! from: 18362 till: 19050
 	for (let i = 0; i < dontArr.length; i++) {
@@ -56,13 +50,6 @@ function createMulSelections(doArr, dontArr) {
 			}
 		}
 
-		if (currentDo === lastDo && lastDont === currentDont) {
-			console.log("returned");
-			return;
-		}
-
-		// then find next dont that > then last do
-		// this selection with enabled mul
 		for (const doIndex of doArr) {
 			if (currentDont < doIndex && doIndex !== lastDo) {
 				currentDo = doIndex;
@@ -76,27 +63,34 @@ function createMulSelections(doArr, dontArr) {
 	return { enabled, disabled };
 }
 
-function multiplySelection(enabledRange, str) {
-	let sum = 0;
+function multiplySelection(enabledRange: number[][], str: string) {
+	let sum: number = 0;
+
 	for (const [start, end] of enabledRange) {
-		console.log(str.slice(start, end));
-		const muls = findMuls(str.slice(start, end));
+		const strEnabled = str.slice(start, end);
+		const muls = findMuls(strEnabled);
+		// console.log("muls", muls);
+
+		// if (muls === null) throw new Error("muls === null");
 		sum += calcMulsWithSum(muls);
 	}
 	return sum;
 }
 
-// Store muls that placed before 'don't()' and after 'do()'
 export function day3part2() {
-	const dataCopy = data;
-	const doIndexes = findDo(data);
-	const dontIndexes = findDont(data);
-	const { enabled, disabled } = createMulSelections(doIndexes, dontIndexes);
+	const dataCopy: string = data;
+	const doIndexes = findDo(dataCopy);
+	const dontIndexes = findDont(dataCopy);
 
-	const sum = multiplySelection(enabled, data);
+	console.log("dont", dontIndexes);
+	console.log("do  ", doIndexes);
 
-	console.log("enabled", enabled);
-	// console.log(disabled);
+	const { enabled } = createMulSelections(doIndexes, dontIndexes);
+	console.log(enabled);
+
+	const sum = multiplySelection(enabled, dataCopy);
+
+	// console.log("enabled", enabled);
 	console.log(sum);
 
 	return true;
