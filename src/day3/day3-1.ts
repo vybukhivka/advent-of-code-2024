@@ -1,6 +1,6 @@
-export const getInputData = async () => {
+export const getInputData = async (path: string) => {
 	try {
-		const response = await fetch("/day3-input.txt");
+		const response = await fetch(path);
 		const data = await response.text();
 		return data;
 	} catch (error) {
@@ -10,7 +10,7 @@ export const getInputData = async () => {
 
 export const example =
 	"xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
-export const data = await getInputData();
+export const data = await getInputData("/day3-input.txt");
 
 export function findMuls(inputData: string) {
 	const mulReg = /mul\(\d{1,3}\,\d{1,3}\)/g!;
