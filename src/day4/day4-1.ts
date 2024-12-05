@@ -36,15 +36,22 @@ function horizontalSearch(splitStr: string[], indexes: AllIndexes) {
     const str = splitStr[i];
 
     for (let j = 0; j < indexes[i].length; j++) {
-      const index = indexes[i][j];
+      const indexForward = indexes[i][j];
+      const indexBackward = indexes[i][j] + 1;
 
-      if (index + 4 <= str.length && str.slice(index, index + 4) === "XMAS") {
+      if (
+        indexForward + 4 <= str.length &&
+        str.slice(indexForward, indexForward + 4) === "XMAS"
+      ) {
         foundXmas++;
       }
 
-      // ugly indexes, but it works
-      if (index >= 4 && str.slice(index - 3, index + 1) === "SAMX") {
-        console.log(str.slice(index - 4, index));
+      debugger;
+      if (
+        indexBackward >= 4 &&
+        str.slice(indexBackward - 4, indexBackward) === "SAMX"
+      ) {
+        console.log(str.slice(indexBackward - 4, indexBackward));
 
         foundXmas++;
       }
